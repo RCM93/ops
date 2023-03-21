@@ -1,0 +1,46 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: public
+
+commonLabels:
+  app: public-api-production
+  team: gpro
+
+commonAnnotations:
+  note: "This is an production deployment"
+
+resources:
+  - ns.yaml
+  - ../../base
+
+patches: 
+  #inline 
+  - target: 
+      name: svc-public-api
+    patch: |
+      - op: add
+        path: /spec/type
+        value: ClusterIP
+  - target: 
+      name: public-api
+      kind: Deployment
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 4
+
+  #archivo yaml
+  - target:
+      name: cm-private-api
+    path: cm-patch-prod.yaml
+  - target:
+      name: public-api
+      kind: Ingress
+    path: ing-patch-prod.yaml
+
+
+images: 
+  - name: KUSTOMIZE-DEFINED
+    newName: rmsql248/kubelabs_publicapi2
+    newTag: 1.0.0

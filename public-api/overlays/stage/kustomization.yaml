@@ -39,3 +39,4 @@ patches:
 images:
 - name: KUSTOMIZE-DEFINED
   newName: rmsql248/kubelabs_publicapi2
+  newTag: 2.0.0

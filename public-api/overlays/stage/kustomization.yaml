@@ -8,35 +8,35 @@ commonLabels:
   team: devops
 
 commonAnnotations:
-  note: "This is an stage deployment"
+  note: This is an stage deployment
 
 resources:
-  - ns.yaml
-  - ../../base
+- ns.yaml
+- ../../base
 
 patchesStrategicMerge:
-  - deploy-merge.yaml
+- deploy-merge.yaml
 
-patches: 
   #inline 
-  - target: 
-      name: svc-public-api
-    patch: |
-      - op: add
-        path: /spec/type
-        value: ClusterIP
 
   #archivo yaml
-  - target:
-      name: cm-private-api
-    path: cm-patch.yaml
-  - target:
-      name: public-api
-      kind: Ingress
-    path: ing-patch.yaml
+patches:
+- patch: |
+    - op: add
+      path: /spec/type
+      value: ClusterIP
+  target:
+    name: svc-public-api
+- path: cm-patch.yaml
+  target:
+    name: cm-private-api
+- path: ing-patch.yaml
+  target:
+    kind: Ingress
+    name: public-api
 
 
-images: 
-  - name: KUSTOMIZE-DEFINED
-    newName: rmsql248/kubelabs_publicapi2
-    newTag: 1.0.0
+images:
+- name: KUSTOMIZE-DEFINED
+  newName: rmsql248/kubelabs_publicapi2
+  newTag: 3.0.0

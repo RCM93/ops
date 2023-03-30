@@ -8,39 +8,39 @@ commonLabels:
   team: gpro
 
 commonAnnotations:
-  note: "This is an production deployment"
+  note: This is an production deployment
 
 resources:
-  - ns.yaml
-  - ../../base
+- ns.yaml
+- ../../base
 
-patches: 
   #inline 
-  - target: 
-      name: svc-public-api
-    patch: |
-      - op: add
-        path: /spec/type
-        value: ClusterIP
-  - target: 
-      name: public-api
-      kind: Deployment
-    patch: |
-      - op: replace
-        path: /spec/replicas
-        value: 4
 
   #archivo yaml
-  - target:
-      name: cm-private-api
-    path: cm-patch-prod.yaml
-  - target:
-      name: public-api
-      kind: Ingress
-    path: ing-patch-prod.yaml
+patches:
+- patch: |
+    - op: add
+      path: /spec/type
+      value: ClusterIP
+  target:
+    name: svc-public-api
+- patch: |
+    - op: replace
+      path: /spec/replicas
+      value: 4
+  target:
+    kind: Deployment
+    name: public-api
+- path: cm-patch-prod.yaml
+  target:
+    name: cm-private-api
+- path: ing-patch-prod.yaml
+  target:
+    kind: Ingress
+    name: public-api
 
 
-images: 
-  - name: KUSTOMIZE-DEFINED
-    newName: rmsql248/kubelabs_publicapi2
-    newTag: 1.0.0
+images:
+- name: KUSTOMIZE-DEFINED
+  newName: rmsql248/kubelabs_publicapi2
+  newTag: 3.1.0

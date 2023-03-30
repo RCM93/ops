@@ -71,7 +71,7 @@ spec:
       - envFrom:
         - configMapRef:
             name: cm-private-api
-        image: rmsql248/kubelabs_publicapi2:3.0.0
+        image: rmsql248/kubelabs_publicapi2:5.0.0
         name: public-api
         ports:
         - containerPort: 3000
